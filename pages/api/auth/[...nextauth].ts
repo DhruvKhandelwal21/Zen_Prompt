@@ -20,7 +20,7 @@ export default NextAuth ({
        session.user.id = currentUser._id.toString();
        return session;
       }catch(error){
-         console.log('hello')
+         console.log(error)
       }
     },
     async signIn({ profile }: any) {
