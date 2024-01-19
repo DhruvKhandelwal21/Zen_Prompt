@@ -7,6 +7,7 @@ import { isMobile } from "react-device-detect";
 import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 const Nav = () => {
   const { data: session } = useSession();
+  console.log(session)
   const [showDropDown, setshowDropDown] = useState(false);
   const [providers, setProviders] = useState(null);
   useEffect(() => {
@@ -17,14 +18,17 @@ const Nav = () => {
   }, []);
 
   return (
-    <div className="mt-2 mb-3 w-full flex-between">
-      <Image src={logo} alt="logo" className="object-contain" width={30} />
-      <p className="logo_txt">Promptopia</p>
+    <div className="my-2 w-full">
+      <div className='my-2 mx-2 flex-between items-center w-full'>
+      <div className="flex items-center gap-5">
+          <Image src={logo} alt="logo" className="object-contain" width={30} />
+          <p className="logo_text text-center">Promptopia</p>
+        </div>
 
       {/*Mobile Navigation*/}
 
       {session?.user ? (
-        <div>
+        <div className="flex gap-4 items-center">
           <Image
             src={menu}
             alt="menu"
@@ -36,13 +40,20 @@ const Nav = () => {
             }}
           />
           {showDropDown && (
-            <div className="absolute right-0 flex flex-col gap-2 px-4 py-3 mr-2 bg-white rounded-md">
+            <div className="absolute right-0 flex flex-col gap-2 px-4 py-3 mr-2 top-12 bg-white rounded-md">
               <button className="black_btn">Create Post</button>
               <button className="outline_btn" onClick={() => signOut()}>
                 Sign Out
               </button>
             </div>
           )}
+          <Image
+            src={session?.user?.image || ""}
+            alt="Profile"
+            className="sm:hidden rounded-full"
+            width={30}
+            height={30}
+          />
         </div>
       ) : (
         <div className="sm:hidden">
@@ -66,13 +77,20 @@ const Nav = () => {
 
      {/*Desktop Navigation*/}
       {session?.user ? (
-        <div className="sm:flex hidden gap-2">
+        <div className="sm:flex hidden gap-4">
           <button onClick={() => {}} className="black_btn">
             Create Post
           </button>
           <button onClick={() => signOut()} className="outline_btn">
             Sign Out
           </button>
+          <Image
+            src={session?.user?.image || ""}
+            alt="Profile"
+            className="rounded-full"
+            width={40}
+            height={40}
+          />
         </div>
       ) : (
         <div className="sm:flex hidden">
@@ -93,6 +111,7 @@ const Nav = () => {
           </>
         </div>
       )}
+    </div>
     </div>
   );
 };

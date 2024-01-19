@@ -1,7 +1,7 @@
 import React from "react";
 import "@styles/globals.css";
-import Nav from "../pages/nav";
-import Provider from "@pages/provider";
+import Nav from "../components/nav";
+import Provider from "@components/provider";
 export const metadata = {
   title: "Promptopia",
   description: "Discover and share AI prompts",
