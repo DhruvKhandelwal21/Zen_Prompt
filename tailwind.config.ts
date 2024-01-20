@@ -13,7 +13,10 @@ module.exports = {
       },
       colors: {
         'primary-orange': '#FF5722',
-      }
+      },
+      screens: {
+        xs: "300px",
+      },
     },
   },
   plugins: [],

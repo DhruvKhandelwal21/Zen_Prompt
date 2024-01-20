@@ -16,7 +16,6 @@ const handler = NextAuth ({
     async session({session}: any){
       try{
        const currentUser: any = await Users.findOne({email:session.user.email});
-       console.log(currentUser)
        session.user.id = currentUser._id.toString();
        return session;
       }catch(error){
