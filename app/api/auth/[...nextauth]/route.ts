@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { connectToDb } from "@utils/db";
 import Users from "@models/users";
-export default NextAuth ({
+const handler = NextAuth ({
   
   // Configure one or more authentication providers
   providers: [
@@ -43,3 +43,5 @@ export default NextAuth ({
   },
 });
 
+
+export { handler as GET, handler as POST }
