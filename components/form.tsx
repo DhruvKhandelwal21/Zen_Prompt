@@ -5,7 +5,8 @@ import React, { useState } from "react";
 const Form = ({
   id = null,
   initialData = {tag:"",prompt:""},
-  onClose
+  onClose,
+  onSuccess
 }: any) => {
   const { data: session }: any = useSession();
   const [formData, setFormData] = useState(initialData);
@@ -21,8 +22,7 @@ const Form = ({
     }),
   });
   if(response){
-    console.log("created prompt");
-    onClose();
+    onSuccess();
   }
   }catch(error){
     console.log(error);

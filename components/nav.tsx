@@ -8,10 +8,9 @@ import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 import Form from "./form";
 const Nav = () => {
   const { data: session } = useSession();
-  console.log(session);
   const [showDropDown, setshowDropDown] = useState(false);
   const [providers, setProviders] = useState(null);
-  const [openCreatePromptDialog, setOpenCreatePromptDialog] = useState(false);
+  // const [openCreatePromptDialog, setOpenCreatePromptDialog] = useState(false);
   useEffect(() => {
     (async () => {
       const res: any = await getProviders();
@@ -43,7 +42,7 @@ const Nav = () => {
             />
             {showDropDown && (
               <div className="absolute right-0 flex flex-col gap-2 px-4 py-3 mr-2 top-12 bg-white rounded-md">
-                <button
+                {/* <button
                   className="black_btn"
                   onClick={() => {
                     setOpenCreatePromptDialog(!openCreatePromptDialog);
@@ -51,7 +50,7 @@ const Nav = () => {
                   }}
                 >
                   Create Post
-                </button>
+                </button> */}
                 <button className="outline_btn" onClick={() => signOut()}>
                   Sign Out
                 </button>
@@ -88,12 +87,12 @@ const Nav = () => {
         {/*Desktop Navigation*/}
         {session?.user ? (
           <div className="sm:flex hidden gap-4">
-            <button
+            {/* <button
               onClick={() => setOpenCreatePromptDialog(!openCreatePromptDialog)}
               className="black_btn"
             >
               Create Post
-            </button>
+            </button> */}
             <button onClick={() => signOut()} className="outline_btn">
               Sign Out
             </button>
@@ -125,9 +124,9 @@ const Nav = () => {
           </div>
         )}
       </div>
-      {openCreatePromptDialog && (
+      {/* {openCreatePromptDialog && (
         <Form onClose = {()=>{setOpenCreatePromptDialog(!openCreatePromptDialog)}} />
-      )}
+      )} */}
     </div>
   );
 };
