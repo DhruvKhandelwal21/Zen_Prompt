@@ -13,20 +13,39 @@ const Form = ({
 
   const handleSubmit = async (e:any)=>{
      e.preventDefault();
-  try{
-   const payload = {...formData,creator:session?.user?.id}
-   const response = await fetch("/api/prompt", {
-    method: "POST",
-    body: JSON.stringify({
-     ...payload
-    }),
-  });
-  if(response){
-    onSuccess();
-  }
-  }catch(error){
-    console.log(error);
-   }
+    if(id){
+      try{
+        const payload = {...formData,creator:session?.user?.id}
+        const response = await fetch(`/api/prompt/${id}`, {
+         method: "PUT",
+         body: JSON.stringify({
+          ...payload
+         }),
+       });
+       if(response){
+         onSuccess();
+       }
+       }catch(error){
+         console.log(error);
+        }
+
+    }else{
+      try{
+        const payload = {...formData,creator:session?.user?.id}
+        const response = await fetch("/api/prompt", {
+         method: "POST",
+         body: JSON.stringify({
+          ...payload
+         }),
+       });
+       if(response){
+         onSuccess();
+       }
+       }catch(error){
+         console.log(error);
+        }
+    }
+  
   }
 
   return (

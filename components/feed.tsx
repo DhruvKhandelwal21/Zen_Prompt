@@ -70,7 +70,7 @@ const Feed = () => {
         </div>
         <div className="flex flex-wrap justify-center gap-10 p-2">
         {filteredData?.map((ele: any, index: number) => {
-          return <PromptCard tag={ele.tag} prompt={ele.prompt} />;
+          return <PromptCard id={ele._id} tag={ele.tag} prompt={ele.prompt} fetchData={fetchData} />;
         })}
         </div>
       </div>
