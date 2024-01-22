@@ -10,13 +10,20 @@ const Feed = () => {
   const [openCreatePromptDialog, setOpenCreatePromptDialog] = useState(false);
 
   useEffect(() => {
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(() => {
-      fetchFilteredData();
-    }, 500);
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if(promptData){
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          fetchFilteredData();
+        }, 500);
+    }
   }, [searchText]);
 
   const fetchFilteredData = () => {
+    console.log(promptData)
     const regex = new RegExp(searchText, "i"); // 'i' flag for case-insensitive search
     const data = promptData?.filter(
       (item: any) =>
@@ -27,9 +34,6 @@ const Feed = () => {
     setFilteredData(data);
   };
   console.log(filteredData);
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const fetchData = async () => {
     try {
@@ -64,7 +68,7 @@ const Feed = () => {
             Add Post
           </button>
         </div>
-        <div className="flex flex-wrap xs:justify-center gap-10 p-2">
+        <div className="flex flex-wrap justify-center gap-10 p-2">
         {filteredData?.map((ele: any, index: number) => {
           return <PromptCard tag={ele.tag} prompt={ele.prompt} />;
         })}
