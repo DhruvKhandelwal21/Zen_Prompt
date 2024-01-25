@@ -13,12 +13,22 @@ const readMoreStyle: React.CSSProperties | null = {
   overflow: "hidden",
   display: "-webkit-box",
 };
-const PromptCard = ({ id, tag, prompt, fetchData }: any) => {
+const PromptCard = ({
+  id,
+  tag,
+  prompt,
+  userName,
+  image,
+  user,
+  fetchData,
+}: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showMoreButton, setShowMoreButton] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [copied, setCopied] = useState("");
+  const { data: session }: any = useSession();
   const ref: any = useRef(null);
+
   useEffect(() => {
     if (ref.current) {
       setShowMoreButton(ref.current.scrollHeight !== ref.current.clientHeight);
@@ -39,7 +49,7 @@ const PromptCard = ({ id, tag, prompt, fetchData }: any) => {
       console.log(e);
     }
   };
-  const { data: session } = useSession();
+  
   return (
     <div
       className={`w-[300px] h-[150px] ${
@@ -49,13 +59,13 @@ const PromptCard = ({ id, tag, prompt, fetchData }: any) => {
       <div className="flex justify-between items-center">
         <div className="flex gap-2">
           <Image
-            src={session?.user?.image || ""}
+            src={image || ""}
             alt="Profile"
             className="rounded-full"
             width={20}
             height={20}
           />
-          <p className="text-sm font-semibold">{session?.user?.name}</p>
+          <p className="text-sm font-semibold">{userName}</p>
         </div>
         <div className="flex gap-2 items-center">
           <Image
@@ -66,22 +76,26 @@ const PromptCard = ({ id, tag, prompt, fetchData }: any) => {
             width={15}
             height={15}
           />
-          <Image
-            src={pencilIcon}
-            alt="Edit"
-            className="cursor-pointer"
-            onClick={()=>setIsEdit(!isEdit)}
-            width={15}
-            height={15}
-          />
-          <Image
-            src={deleteIcon}
-            alt="Delete"
-            className="cursor-pointer"
-            onClick={()=>handleDelete()}
-            width={15}
-            height={15}
-          />
+          {session?.user?.id === user && (
+            <Image
+              src={pencilIcon}
+              alt="Edit"
+              className="cursor-pointer"
+              onClick={() => setIsEdit(!isEdit)}
+              width={15}
+              height={15}
+            />
+          )}
+          {session?.user?.id === user && (
+            <Image
+              src={deleteIcon}
+              alt="Delete"
+              className="cursor-pointer"
+              onClick={() => handleDelete()}
+              width={15}
+              height={15}
+            />
+          )}
         </div>
       </div>
       <div className="flex flex-col justify-between h-[100%]">
@@ -107,8 +121,18 @@ const PromptCard = ({ id, tag, prompt, fetchData }: any) => {
 
         <p className="text-blue-400 text-md">{`# ${tag}`}</p>
       </div>
-      {isEdit&&(
-        <Form id={id} initialData={{tag:tag,prompt:prompt}} onClose = {()=>{setIsEdit(!isEdit)}} onSuccess = {()=>{setIsEdit(!isEdit); fetchData()}}  />
+      {isEdit && (
+        <Form
+          id={id}
+          initialData={{ tag: tag, prompt: prompt }}
+          onClose={() => {
+            setIsEdit(!isEdit);
+          }}
+          onSuccess={() => {
+            setIsEdit(!isEdit);
+            fetchData();
+          }}
+        />
       )}
     </div>
   );

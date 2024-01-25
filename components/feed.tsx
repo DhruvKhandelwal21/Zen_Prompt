@@ -2,28 +2,30 @@
 import React, { useEffect, useState } from "react";
 import PromptCard from "./promptCard";
 import Form from "./form";
+import { useSession } from "next-auth/react";
 let searchTimeout: any;
 const Feed = () => {
   const [searchText, setSearchText] = useState("");
   const [promptData, setPromptData] = useState<any | null>(null);
   const [filteredData, setFilteredData] = useState<any | null>(null);
   const [openCreatePromptDialog, setOpenCreatePromptDialog] = useState(false);
+  const { data: session }: any = useSession();
 
   useEffect(() => {
     fetchData();
   }, []);
 
   useEffect(() => {
-    if(promptData){
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-          fetchFilteredData();
-        }, 500);
+    if (promptData) {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        fetchFilteredData();
+      }, 500);
     }
   }, [searchText]);
 
   const fetchFilteredData = () => {
-    console.log(promptData)
+    console.log(promptData);
     const regex = new RegExp(searchText, "i"); // 'i' flag for case-insensitive search
     const data = promptData?.filter(
       (item: any) =>
@@ -47,7 +49,7 @@ const Feed = () => {
       console.log(error);
     }
   };
-
+  console.log(filteredData);
   return (
     <>
       <div className="flex flex-col items-center w-full mt-5">
@@ -59,19 +61,31 @@ const Feed = () => {
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />
-          <button
-            className="px-3 py-2 bg-black hover:bg-white hover:text-black text-white rounded"
-            onClick={() => {
-              setOpenCreatePromptDialog(!openCreatePromptDialog);
-            }}
-          >
-            Add Post
-          </button>
+          {session?.user?.id && (
+            <button
+              className="px-3 py-2 bg-black hover:bg-white hover:text-black text-white rounded"
+              onClick={() => {
+                setOpenCreatePromptDialog(!openCreatePromptDialog);
+              }}
+            >
+              Add Post
+            </button>
+          )}
         </div>
         <div className="flex flex-wrap justify-center gap-10 p-2">
-        {filteredData?.map((ele: any, index: number) => {
-          return <PromptCard id={ele._id} tag={ele.tag} prompt={ele.prompt} fetchData={fetchData} />;
-        })}
+          {filteredData?.map((ele: any, index: number) => {
+            return (
+              <PromptCard
+                id={ele._id}
+                tag={ele.tag}
+                prompt={ele.prompt}
+                userName={ele.creator.userName}
+                image={ele.creator.image}
+                user={ele.creator._id}
+                fetchData={fetchData}
+              />
+            );
+          })}
         </div>
       </div>
       {openCreatePromptDialog && (
